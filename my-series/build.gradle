@@ -32,6 +32,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:mysql'
+	testImplementation "org.spockframework:spock-core:1.1-groovy-2.4"
+	testImplementation "org.spockframework:spock-spring:1.1-groovy-2.4"
 }
 
 dependencyManagement {
