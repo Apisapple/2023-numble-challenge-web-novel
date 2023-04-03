@@ -1,5 +1,6 @@
 package com.example.myseries.member.service;
 
+import com.example.myseries.member.dto.MemberDto;
 import com.example.myseries.member.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +31,32 @@ public class MemberService {
 
   /**
    * Get Member information by id
+   *
    * @param id Member's ID
    * @return Member
    * @throws IllegalArgumentException 조회하지 못한 상황
    */
-  public Member getMemberById(Long id) throws IllegalArgumentException {
-    return memberRepository.findById(id).orElseThrow(
+  public MemberDto getMemberById(Long id) throws IllegalArgumentException {
+    Member savedMember = memberRepository.findById(id).orElseThrow(
         () -> new IllegalArgumentException("Cannot found member by id")
     );
+
+    return savedMember.toDto();
+  }
+
+  /**
+   * Get Member information by name
+   *
+   * @param name Member's ID
+   * @return Member
+   * @throws IllegalArgumentException 조회하지 못한 상황
+   */
+  public MemberDto getMemberByName(String name) throws IllegalArgumentException {
+    Member savedMember = memberRepository.findByName(name).orElseThrow(
+        () -> new IllegalArgumentException("Cannot found member by name")
+    );
+
+    return savedMember.toDto();
   }
 
   /**
@@ -48,14 +67,14 @@ public class MemberService {
    * @return member information
    */
   @Transactional
-  public Member buyPoint(String name, Integer point) {
-    Member savecMember = memberRepository.findByName(name).orElseThrow(
-        () -> new IllegalArgumentException("CANNOT FOUNT MEMBER")
+  public MemberDto buyPoint(String name, Integer point) {
+    Member savedMember = memberRepository.findByName(name).orElseThrow(
+        () -> new IllegalArgumentException("Cannot found member by name")
     );
 
-    savecMember.addPoint(point);
+    savedMember.addPoint(point);
 
-    return savecMember;
+    return savedMember.toDto();
   }
 
   /**
@@ -66,13 +85,13 @@ public class MemberService {
    * @return member information
    */
   @Transactional
-  public Member usePoint(String name, Integer point) {
-    Member savecMember = memberRepository.findByName(name).orElseThrow(
-        () -> new IllegalArgumentException("CANNOT FOUNT MEMBER")
+  public MemberDto usePoint(String name, Integer point) {
+    Member savedMember = memberRepository.findByName(name).orElseThrow(
+        () -> new IllegalArgumentException("Cannot found member by name")
     );
 
-    savecMember.subPoint(point);
+    savedMember.subPoint(point);
 
-    return savecMember;
+    return savedMember.toDto();
   }
 }
