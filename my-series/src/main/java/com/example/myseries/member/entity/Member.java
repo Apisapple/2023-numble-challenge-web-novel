@@ -1,5 +1,6 @@
 package com.example.myseries.member.entity;
 
+import com.example.myseries.member.dto.MemberDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,5 +38,13 @@ public class Member {
     if(this.point - point >= 0) {
       this.point = this.point - point;
     }
+  }
+
+  public MemberDto toDto() {
+    return MemberDto.builder()
+        .id(this.id)
+        .name(this.name)
+        .point(this.point)
+        .build();
   }
 }
