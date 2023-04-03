@@ -16,14 +16,29 @@ public class MemberService {
   /**
    * Saved member
    *
-   * @param member member information
+   * @param name member's name
    * @return saved member
    */
   @Transactional
-  public Member saveMember(Member member) {
+  public Member saveMember(String name) {
+    Member member = Member.builder()
+        .name(name)
+        .build();
     return memberRepository.save(member);
   }
 
+
+  /**
+   * Get Member information by id
+   * @param id Member's ID
+   * @return Member
+   * @throws IllegalArgumentException 조회하지 못한 상황
+   */
+  public Member getMemberById(Long id) throws IllegalArgumentException {
+    return memberRepository.findById(id).orElseThrow(
+        () -> new IllegalArgumentException("Cannot found member by id")
+    );
+  }
 
   /**
    * buy point function
