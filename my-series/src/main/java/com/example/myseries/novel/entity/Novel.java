@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,9 @@ public class Novel {
   private String author;
   @Column(name = "NOVEL_GRADE", nullable = false)
   private Float novelGrade;
+
+  @OneToMany(mappedBy = "novel")
+  private List<NovelCategory> novelCategories;
 
   @Builder
   public Novel(String novelTitle, String author) {
