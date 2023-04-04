@@ -4,12 +4,6 @@
 > 
 > ex ) 네이버 시리즈
 
-
-
-
-
-
-
 ## 요구 사항
 
 - 소설 등록/작성/삭제
@@ -19,3 +13,7 @@
 - 소설 편당 조회 및 결제
 - 구매수 집계 등
 - 포인트 충전
+
+### Entity Relationship Diagram
+
+![](C:\Users\user\Documents\GitHub\2023-numble-challenge-web-novel\diagram\numble_challenge.drawio.png)
