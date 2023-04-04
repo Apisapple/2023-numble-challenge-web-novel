@@ -16,4 +16,4 @@
 
 ### Entity Relationship Diagram
 
-![](C:\Users\user\Documents\GitHub\2023-numble-challenge-web-novel\diagram\numble_challenge.drawio.png)
+![](./diagram/numble_challenge.drawio.png)
