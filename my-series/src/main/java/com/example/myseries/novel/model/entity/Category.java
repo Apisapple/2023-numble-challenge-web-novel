@@ -1,5 +1,6 @@
 package com.example.myseries.novel.model.entity;
 
+import com.example.myseries.novel.model.dto.CategoryDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,14 +23,21 @@ public class Category {
   @Column(name = "CATEGORY_ID")
   private Long id;
 
-  @Column(name = "CATEGORY", nullable = false, length = 255)
-  private String category;
+  @Column(name = "VALUE", nullable = false, length = 255)
+  private String value;
 
   @OneToMany(mappedBy = "category")
   private List<NovelCategory> novelCategories;
+
   @Builder
-  public Category(String category) {
-    this.category = category;
+  public Category(String value) {
+    this.value = value;
   }
 
+  public CategoryDto toDto() {
+    return CategoryDto.builder()
+        .id(this.id)
+        .value(this.value)
+        .build();
+  }
 }
