@@ -1,4 +1,4 @@
-package com.example.myseries.novel.entity;
+package com.example.myseries.novel.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

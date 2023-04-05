@@ -1,7 +1,7 @@
 package com.example.myseries.member.service;
 
-import com.example.myseries.member.dto.MemberDto;
-import com.example.myseries.member.entity.Member;
+import com.example.myseries.member.model.dto.MemberDto;
+import com.example.myseries.member.model.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

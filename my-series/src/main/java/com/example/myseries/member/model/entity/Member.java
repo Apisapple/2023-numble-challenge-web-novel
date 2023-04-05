@@ -1,6 +1,6 @@
-package com.example.myseries.member.entity;
+package com.example.myseries.member.model.entity;
 
-import com.example.myseries.member.dto.MemberDto;
+import com.example.myseries.member.model.dto.MemberDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -1,6 +1,6 @@
 package com.example.myseries.member.controller;
 
-import com.example.myseries.member.dto.MemberDto;
+import com.example.myseries.member.model.dto.MemberDto;
 import com.example.myseries.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
