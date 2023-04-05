@@ -1,4 +1,4 @@
-package com.example.myseries.novel.entity;
+package com.example.myseries.novel.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

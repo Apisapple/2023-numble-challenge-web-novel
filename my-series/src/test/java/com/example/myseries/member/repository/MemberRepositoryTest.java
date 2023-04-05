@@ -1,7 +1,7 @@
 package com.example.myseries.member.repository;
 
 
-import com.example.myseries.member.entity.Member;
+import com.example.myseries.member.model.entity.Member;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

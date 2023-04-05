@@ -3,7 +3,7 @@ package com.example.myseries.member.service;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.example.myseries.member.entity.Member;
+import com.example.myseries.member.model.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
