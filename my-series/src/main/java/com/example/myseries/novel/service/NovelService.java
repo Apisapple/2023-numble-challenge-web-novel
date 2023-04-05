@@ -26,6 +26,15 @@ public class NovelService {
     return category.toDto();
   }
 
+  public boolean deleteCategory(String value) {
+    Category category = categoryRepository.findCategoryByValue(value).orElseThrow(
+        () -> new IllegalArgumentException("Cannot found category.")
+    );
+
+    categoryRepository.delete(category);
+    return true;
+  }
+
   private Category makeNewCategory(String value) {
     Category category = Category.builder()
         .value(value)
