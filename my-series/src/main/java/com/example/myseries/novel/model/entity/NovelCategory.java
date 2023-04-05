@@ -20,11 +20,11 @@ public class NovelCategory {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @JoinColumn(name = "NOVEL_ID")
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   private Novel novel;
 
   @JoinColumn(name = "CATEGORY_ID")
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   private Category category;
 
   public NovelCategory(Novel novel, Category category) {
