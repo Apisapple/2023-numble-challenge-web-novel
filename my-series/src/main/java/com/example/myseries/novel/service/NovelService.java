@@ -1,5 +1,6 @@
 package com.example.myseries.novel.service;
 
+import com.example.myseries.converter.CategoryConverter;
 import com.example.myseries.novel.model.dto.CategoryDto;
 import com.example.myseries.novel.model.entity.Category;
 import com.example.myseries.novel.repository.CategoryRepository;
@@ -18,12 +19,13 @@ public class NovelService {
 
   private final NovelCategoryRepository novelCategoryRepository;
 
+  private final CategoryConverter categoryConverter = new CategoryConverter();
 
   public CategoryDto makeCategory(String value) {
     Category category = categoryRepository.findCategoryByValue(value).orElseGet(
         () -> makeNewCategory(value)
     );
-    return category.toDto();
+    return categoryConverter.convertFromEntity(category);
   }
 
   public boolean deleteCategory(String value) {
