@@ -33,7 +33,7 @@ public class Novel {
   private List<NovelCategory> novelCategories;
 
   @OneToMany(mappedBy = "novel")
-  private List<Content> contents;
+  private List<Episode> episodes;
   @Builder
   public Novel(String novelTitle, String author) {
     this.novelTitle = novelTitle;
