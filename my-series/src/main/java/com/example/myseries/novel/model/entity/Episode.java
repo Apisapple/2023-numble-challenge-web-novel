@@ -17,7 +17,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Content {
+public class Episode {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +25,17 @@ public class Content {
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Novel novel;
-  
+
   private String title;
 
-  private String contentValue;
+  private String content;
 
-  private Float contentGrade;
+  private Float grade;
 
   @Builder
-  public Content(String title, String contentValue) {
+  public Episode(String title, String content) {
     this.title = title;
-    this.contentValue = contentValue;
-    this.contentGrade = 0.0f;
+    this.content = content;
+    this.grade = 0.0f;
   }
 }
