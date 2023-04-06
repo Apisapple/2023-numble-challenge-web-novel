@@ -11,10 +11,12 @@ import jakarta.persistence.Table;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "NOVEL_CATEGORY")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
@@ -32,12 +34,5 @@ public class Category {
   @Builder
   public Category(String value) {
     this.value = value;
-  }
-
-  public CategoryDto toDto() {
-    return CategoryDto.builder()
-        .id(this.id)
-        .value(this.value)
-        .build();
   }
 }
