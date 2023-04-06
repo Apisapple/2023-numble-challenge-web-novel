@@ -22,14 +22,14 @@ public class NovelService {
   private final CategoryConverter categoryConverter = new CategoryConverter();
 
   public CategoryDto makeCategory(String value) {
-    Category category = categoryRepository.findCategoryByValue(value).orElseGet(
-        () -> makeNewCategory(value)
+    Category category = categoryRepository.findCategoryByValue(value.trim()).orElseGet(
+        () -> makeNewCategory(value.trim())
     );
     return categoryConverter.convertFromEntity(category);
   }
 
   public boolean deleteCategory(String value) {
-    Category category = categoryRepository.findCategoryByValue(value).orElseThrow(
+    Category category = categoryRepository.findCategoryByValue(value.trim()).orElseThrow(
         () -> new IllegalArgumentException("Cannot found category.")
     );
 
