@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,7 @@ public class NovelCategory {
   @ManyToOne(fetch = FetchType.EAGER)
   private Category category;
 
+  @Builder
   public NovelCategory(Novel novel, Category category) {
     this.novel = novel;
     this.category = category;
