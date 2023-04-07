@@ -1,11 +1,9 @@
 package com.example.myseries.converter;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public abstract class Converter<T, U> {
+public class Converter<T, U> {
 
   private final Function<T, U> fromDto;
   private final Function<U, T> fromEntity;
@@ -23,11 +21,11 @@ public abstract class Converter<T, U> {
     return fromEntity.apply(entity);
   }
 
-  public final List<U> createFromDtos(final Collection<T> dtos) {
-    return dtos.stream().map(this::convertFromDto).collect(Collectors.toList());
+  public final List<U> createFromDtos(final List<T> dtos) {
+    return dtos.stream().map(this::convertFromDto).toList();
   }
 
-  public final List<T> createFromEntities(final Collection<U> entities) {
-    return entities.stream().map(this::convertFromEntity).collect(Collectors.toList());
+  public final List<T> createFromEntities(final List<U> entities) {
+    return entities.stream().map(this::convertFromEntity).toList();
   }
 }
