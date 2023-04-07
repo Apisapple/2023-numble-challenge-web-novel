@@ -10,9 +10,11 @@ import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Getter
 @Entity(name = "NOVEL")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -39,5 +41,9 @@ public class Novel {
     this.novelTitle = novelTitle;
     this.author = author;
     this.novelGrade = 0.0f;
+  }
+
+  public void addNovelCategory(NovelCategory novelCategory) {
+    novelCategories.add(novelCategory);
   }
 }
