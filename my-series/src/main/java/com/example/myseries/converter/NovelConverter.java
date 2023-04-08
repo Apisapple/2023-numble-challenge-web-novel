@@ -21,7 +21,7 @@ public class NovelConverter extends Converter<NovelDto, Novel> {
 
     return NovelDto.builder()
         .id(novel.getId())
-        .author(novel.getAuthor())
+        .author(novel.getAuthor().getName())
         .novelTitle(novel.getNovelTitle())
         .novelGrade(novel.getNovelGrade())
         .categoryDtoList(categoryConverter.createFromEntities(categories))
@@ -30,7 +30,6 @@ public class NovelConverter extends Converter<NovelDto, Novel> {
 
   private static Novel convertToEntity(NovelDto novelDto) {
     return Novel.builder()
-        .author(novelDto.getAuthor())
         .novelTitle(novelDto.getNovelTitle())
         .build();
   }
