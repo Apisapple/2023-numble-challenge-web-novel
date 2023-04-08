@@ -1,12 +1,17 @@
 package com.example.myseries.novel.model.entity;
 
+import com.example.myseries.member.model.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.util.Arrays;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,8 +31,11 @@ public class Novel {
   private Long id;
   @Column(name = "NOVEL_TITEL", nullable = false)
   private String novelTitle;
-  @Column(name = "AUTHOR", nullable = false)
-  private String author;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "AUTHOR", nullable = false)
+  private Member author;
+
   @Column(name = "NOVEL_GRADE", nullable = false)
   private Float novelGrade;
 
@@ -36,14 +44,22 @@ public class Novel {
 
   @OneToMany(mappedBy = "novel")
   private List<Episode> episodes;
+
   @Builder
-  public Novel(String novelTitle, String author) {
+  public Novel(String novelTitle) {
     this.novelTitle = novelTitle;
-    this.author = author;
     this.novelGrade = 0.0f;
   }
 
-  public void addNovelCategory(NovelCategory novelCategory) {
-    novelCategories.add(novelCategory);
+  public void setAuthor(Member author) {
+    this.author = author;
+  }
+
+  public void addNovelCategory(NovelCategory... categories) {
+    novelCategories.addAll(Arrays.asList(categories));
+  }
+
+  public void removeNovelCategory(NovelCategory novelCategory) {
+    novelCategories.remove(novelCategory);
   }
 }

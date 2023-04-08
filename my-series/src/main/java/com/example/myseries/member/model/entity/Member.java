@@ -1,11 +1,16 @@
 package com.example.myseries.member.model.entity;
 
 import com.example.myseries.member.model.dto.MemberDto;
+import com.example.myseries.novel.model.entity.Novel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +28,13 @@ public class Member {
   private String name;
 
   private Integer point;
+
+  @OneToMany(mappedBy = "id")
+  private List<Novel> novels;
+
+  public void writeNovel(Novel novel) {
+    this.novels.add(novel);
+  }
 
   @Builder
   public Member(String name) {
