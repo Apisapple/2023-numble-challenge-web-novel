@@ -2,6 +2,8 @@ package com.example.myseries.novel.service;
 
 import com.example.myseries.converter.CategoryConverter;
 import com.example.myseries.converter.NovelConverter;
+import com.example.myseries.member.model.entity.Member;
+import com.example.myseries.member.repository.MemberRepository;
 import com.example.myseries.novel.model.dto.CategoryDto;
 import com.example.myseries.novel.model.dto.NovelDto;
 import com.example.myseries.novel.model.entity.Category;
@@ -24,15 +26,20 @@ public class NovelService {
   private final CategoryConverter categoryConverter = new CategoryConverter();
 
   private final NovelConverter novelConverter = new NovelConverter();
+  private final MemberRepository memberRepository;
 
   public NovelDto writeNovel(NovelDto novelDto) {
-    novelRepository.findNovelByNovelTitle(novelDto.getNovelTitle())
-        .ifPresent(novel -> {
-          throw new IllegalArgumentException("Already exist novel title.");
-        });
+    validateNovelTitle(novelDto.getNovelTitle());
 
     Novel novel = novelConverter.convertFromDto(novelDto);
+    setCategories(novelDto, novel);
+    addAuthor(novelDto, novel);
 
+    Novel savedNovel = novelRepository.save(novel);
+    return novelConverter.convertFromEntity(savedNovel);
+  }
+
+  private void setCategories(NovelDto novelDto, Novel novel) {
     novelDto.getCategoryDtoList().forEach(categoryDto -> {
       Category category = categoryRepository.findCategoryByValue(categoryDto.getValue())
           .orElse(makeNewCategory(categoryDto.getValue()));
@@ -44,9 +51,10 @@ public class NovelService {
 
       novel.addNovelCategory(novelCategory);
     });
+  }
 
-    Novel savedNovel = novelRepository.save(novel);
-    return novelConverter.convertFromEntity(savedNovel);
+  public void deleteNovel(NovelDto novelDto) {
+
   }
 
   public List<CategoryDto> getAllCategory() {
@@ -75,5 +83,17 @@ public class NovelService {
         .build();
 
     return categoryRepository.save(category);
+  }
+
+  private void validateNovelTitle(String novelTitle) {
+    if (novelRepository.existsByNovelTitle(novelTitle)) {
+      throw new IllegalArgumentException("Novel title already exists.");
+    }
+  }
+
+  private void addAuthor(NovelDto novelDto, Novel novel) {
+    Member author = memberRepository.findByName(novelDto.getAuthor())
+        .orElseThrow(() -> new RuntimeException("Author not found."));
+    novel.setAuthor(author);
   }
 }
