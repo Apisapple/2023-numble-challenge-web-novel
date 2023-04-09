@@ -1,5 +1,6 @@
 package com.example.myseries.novel.model.entity;
 
+import com.example.myseries.common.entity.BaseTimeEntity;
 import com.example.myseries.member.model.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity(name = "NOVEL")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Novel {
+public class Novel extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

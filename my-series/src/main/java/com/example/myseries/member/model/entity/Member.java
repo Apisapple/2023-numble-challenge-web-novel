@@ -1,5 +1,6 @@
 package com.example.myseries.member.model.entity;
 
+import com.example.myseries.common.entity.BaseTimeEntity;
 import com.example.myseries.member.model.dto.MemberDto;
 import com.example.myseries.novel.model.entity.Novel;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "member")
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
