@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AccessLevel;
@@ -40,7 +41,7 @@ public class Novel {
   private Float novelGrade;
 
   @OneToMany(mappedBy = "novel")
-  private List<NovelCategory> novelCategories;
+  private List<NovelCategory> novelCategories = new ArrayList<>();
 
   @OneToMany(mappedBy = "novel")
   private List<Episode> episodes;
