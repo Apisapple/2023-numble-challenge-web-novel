@@ -12,6 +12,7 @@ import com.example.myseries.novel.model.entity.NovelCategory;
 import com.example.myseries.novel.repository.CategoryRepository;
 import com.example.myseries.novel.repository.NovelRepository;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,21 +40,19 @@ public class NovelService {
     return novelConverter.convertFromEntity(savedNovel);
   }
 
-  private void setCategories(NovelDto novelDto, Novel novel) {
-    novelDto.getCategoryDtoList().forEach(categoryDto -> {
-      Category category = categoryRepository.findCategoryByValue(categoryDto.getValue())
-          .orElse(makeNewCategory(categoryDto.getValue()));
+  public void updateNovel(NovelDto novelDto) {
 
-      NovelCategory novelCategory = NovelCategory.builder()
-          .novel(novel)
-          .category(category)
-          .build();
-
-      novel.addNovelCategory(novelCategory);
-    });
   }
 
   public void deleteNovel(NovelDto novelDto) {
+    /** TODO
+     *
+     * 1. 구매 목록이 있을 경우 삭제 X
+     * 2. 에피소드가 추가 되어 있을 경우, 삭제 X
+     * */
+  }
+
+  public void WriteEpisode() {
 
   }
 
@@ -95,5 +94,20 @@ public class NovelService {
     Member author = memberRepository.findByName(novelDto.getAuthor())
         .orElseThrow(() -> new RuntimeException("Author not found."));
     novel.setAuthor(author);
+  }
+  private void setCategories(NovelDto novelDto, Novel novel) {
+    if (!Objects.isNull(novelDto.getCategoryDtoList())) {
+      novelDto.getCategoryDtoList().forEach(categoryDto -> {
+        Category category = categoryRepository.findCategoryByValue(categoryDto.getValue())
+            .orElse(makeNewCategory(categoryDto.getValue()));
+
+        NovelCategory novelCategory = NovelCategory.builder()
+            .novel(novel)
+            .category(category)
+            .build();
+
+        novel.addNovelCategory(novelCategory);
+      });
+    }
   }
 }
