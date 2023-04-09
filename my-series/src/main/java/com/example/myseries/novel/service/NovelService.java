@@ -70,7 +70,7 @@ public class NovelService {
    * @param value 추가할 카테고리 정보
    * @return 추가한 카테고리에 대한 DTO 정보
    */
-  public CategoryDto makeCategory(String value) {
+  public CategoryDto saveCategory(String value) {
     Category category = categoryRepository.findCategoryByValue(value.trim()).orElseGet(
         () -> makeNewCategory(value.trim())
     );
