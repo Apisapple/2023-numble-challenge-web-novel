@@ -9,7 +9,7 @@ import java.util.List;
 public class NovelConverter extends Converter<NovelDto, Novel> {
 
   private static final CategoryConverter categoryConverter = new CategoryConverter();
-
+  private static final EpisodeConverter episodeConverter = new EpisodeConverter();
   public NovelConverter() {
     super(NovelConverter::convertToEntity, NovelConverter::convertToDto);
   }
@@ -25,6 +25,7 @@ public class NovelConverter extends Converter<NovelDto, Novel> {
         .novelTitle(novel.getNovelTitle())
         .novelGrade(novel.getNovelGrade())
         .categoryDtoList(categoryConverter.createFromEntities(categories))
+        .episodeDtoList(episodeConverter.createFromEntities(novel.getEpisodes()))
         .build();
   }
 
