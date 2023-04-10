@@ -26,7 +26,10 @@ public class EpisodeConverter extends Converter<EpisodeDto, Episode> {
   }
 
   private static Episode convertToEntity(EpisodeDto episodeDto) {
-    return null;
+    return Episode.builder()
+        .title(episodeDto.getTitle())
+        .content(episodeDto.getContent())
+        .build();
   }
 
   public final List<Episode> createFromDtos(final Collection<EpisodeDto> dtos) {
