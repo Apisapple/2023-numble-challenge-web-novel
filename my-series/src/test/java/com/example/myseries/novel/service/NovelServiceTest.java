@@ -2,16 +2,21 @@ package com.example.myseries.novel.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.example.myseries.converter.CategoryConverter;
 import com.example.myseries.member.model.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import com.example.myseries.novel.model.dto.CategoryDto;
+import com.example.myseries.novel.model.dto.EpisodeDto;
 import com.example.myseries.novel.model.dto.NovelDto;
 import com.example.myseries.novel.model.entity.Category;
+import com.example.myseries.novel.model.entity.Episode;
 import com.example.myseries.novel.model.entity.Novel;
 import com.example.myseries.novel.model.entity.NovelCategory;
 import com.example.myseries.novel.repository.CategoryRepository;
+import com.example.myseries.novel.repository.EpisodeRepository;
 import com.example.myseries.novel.repository.NovelRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +43,9 @@ class NovelServiceTest {
 
   @Mock
   CategoryRepository categoryRepository;
+
+  @Mock
+  EpisodeRepository episodeRepository;
 
   @Test
   void writeNovel() {
@@ -74,6 +82,27 @@ class NovelServiceTest {
     NovelDto novelDto = novelService.writeNovel(requestData);
     System.out.println("NovelData : " + novelDto.toString());
     Assertions.assertNotNull(novelDto);
+  }
+
+  @Test
+  void writeEpisode() {
+    EpisodeDto episodeDto = mock(EpisodeDto.class);
+    NovelDto novelDto = mock(NovelDto.class);
+    Novel novel = mock(Novel.class);
+    Episode episode = mock(Episode.class);
+    Member member = mock(Member.class);
+
+    when(novel.getAuthor()).thenReturn(member);
+
+    given(novelRepository.findNovelByNovelTitle(any())).willReturn(Optional.of(novel));
+    given(episodeRepository.save(any())).willReturn(episode);
+
+    NovelDto writeDto = novelService.writeEpisode(novelDto, episodeDto);
+
+    System.out.println(writeDto.toString());
+
+    Assertions.assertEquals(writeDto.getId(), novelDto.getId());
+    Assertions.assertEquals(1, writeDto.getEpisodeDtoList().size());
   }
 
   @Test
