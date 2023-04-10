@@ -1,15 +1,19 @@
 package com.example.myseries.novel.service;
 
 import com.example.myseries.converter.CategoryConverter;
+import com.example.myseries.converter.EpisodeConverter;
 import com.example.myseries.converter.NovelConverter;
 import com.example.myseries.member.model.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import com.example.myseries.novel.model.dto.CategoryDto;
+import com.example.myseries.novel.model.dto.EpisodeDto;
 import com.example.myseries.novel.model.dto.NovelDto;
 import com.example.myseries.novel.model.entity.Category;
+import com.example.myseries.novel.model.entity.Episode;
 import com.example.myseries.novel.model.entity.Novel;
 import com.example.myseries.novel.model.entity.NovelCategory;
 import com.example.myseries.novel.repository.CategoryRepository;
+import com.example.myseries.novel.repository.EpisodeRepository;
 import com.example.myseries.novel.repository.NovelRepository;
 import java.util.List;
 import java.util.Objects;
@@ -21,21 +25,21 @@ import org.springframework.stereotype.Service;
 public class NovelService {
 
   private final NovelRepository novelRepository;
-
+  private final EpisodeRepository episodeRepository;
   private final CategoryRepository categoryRepository;
-
   private final CategoryConverter categoryConverter = new CategoryConverter();
-
   private final NovelConverter novelConverter = new NovelConverter();
+  private final EpisodeConverter episodeConverter = new EpisodeConverter();
   private final MemberRepository memberRepository;
 
   /**
    * 소설 추구 함수
+   *
    * @param novelDto 추가할 소설의 DTO 정보
    * @return 추가된 소설의 DTO 정보
    */
   public NovelDto writeNovel(NovelDto novelDto) {
-    validateNovelTitle(novelDto.getNovelTitle());
+    isExistsNovelTitle(novelDto.getNovelTitle());
 
     Novel novel = novelConverter.convertFromDto(novelDto);
     setCategories(novelDto, novel);
@@ -46,7 +50,6 @@ public class NovelService {
   }
 
   public void updateNovel(NovelDto novelDto) {
-
   }
 
   public void deleteNovel(NovelDto novelDto) {
@@ -57,8 +60,20 @@ public class NovelService {
      * */
   }
 
-  public void WriteEpisode() {
+  /**
+   * episode 추가 함수
+   * @param novelDto
+   * @param episodeDto
+   * @return
+   */
+  public NovelDto writeEpisode(NovelDto novelDto, EpisodeDto episodeDto) {
+    Novel novel = novelRepository.findNovelByNovelTitle(novelDto.getNovelTitle()).orElseThrow(
+        () -> new IllegalArgumentException("Cannot find novel by title")
+    );
 
+    Episode episode = episodeConverter.convertFromDto(episodeDto);
+    novel.addEpisode(episode);
+    episodeRepository.save(episode);
   }
 
   public List<CategoryDto> getAllCategory() {
@@ -67,6 +82,7 @@ public class NovelService {
 
   /**
    * 카테고리를 추가 함수
+   *
    * @param value 추가할 카테고리 정보
    * @return 추가한 카테고리에 대한 DTO 정보
    */
@@ -79,6 +95,7 @@ public class NovelService {
 
   /**
    * 카테고리 삭제 함수
+   *
    * @param value 카테고리 값
    * @return 카테고리 삭제 성공 여부
    */
@@ -93,6 +110,7 @@ public class NovelService {
 
   /**
    * 새로운 카테고리 생성
+   *
    * @param value 새로 생성할 카테고리의 값
    * @return Category 새로 생성된 카테고리
    */
@@ -106,18 +124,31 @@ public class NovelService {
 
   /**
    * 소설이 이미 존재하는지 검증하는 함수
+   *
    * @param novelTitle 소설의 제목
    */
-  private void validateNovelTitle(String novelTitle) {
+  private void isExistsNovelTitle(String novelTitle) {
     if (novelRepository.existsByNovelTitle(novelTitle)) {
       throw new IllegalArgumentException("Novel title already exists.");
     }
   }
 
   /**
+   * 소설이 존재하지 않는지 검증하는 함수
+   *
+   * @param novelTitle 소설의 제목
+   */
+  private void isNotExistNovelTitle(String novelTitle) {
+    if (!novelRepository.existsByNovelTitle(novelTitle)) {
+      throw new IllegalArgumentException("Novel is not exists.");
+    }
+  }
+
+  /**
    * 소설 작가 정보 추가 함수
+   *
    * @param novelDto novel DTO
-   * @param novel novel 엔티티
+   * @param novel    novel 엔티티
    */
   private void addAuthor(NovelDto novelDto, Novel novel) {
     Member author = memberRepository.findByName(novelDto.getAuthor())
@@ -127,8 +158,9 @@ public class NovelService {
 
   /**
    * 엔티티에 카테고리 정보 셋팅 함수
+   *
    * @param novelDto novel DTO
-   * @param novel Entity
+   * @param novel    Entity
    */
   private void setCategories(NovelDto novelDto, Novel novel) {
     if (!Objects.isNull(novelDto.getCategoryDtoList())) {
