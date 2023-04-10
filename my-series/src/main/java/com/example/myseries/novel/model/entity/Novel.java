@@ -64,4 +64,9 @@ public class Novel extends BaseTimeEntity {
   public void removeNovelCategory(NovelCategory novelCategory) {
     novelCategories.remove(novelCategory);
   }
+
+  public void addEpisode(Episode episode) {
+    this.episodes.add(episode);
+    episode.setNovel(this);
+  }
 }
