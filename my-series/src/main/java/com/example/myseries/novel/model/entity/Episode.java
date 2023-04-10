@@ -39,4 +39,8 @@ public class Episode extends BaseTimeEntity {
     this.content = content;
     this.grade = 0.0f;
   }
+
+  public void setNovel(Novel novel) {
+    this.novel = novel;
+  }
 }
