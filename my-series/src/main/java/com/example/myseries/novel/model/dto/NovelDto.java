@@ -24,4 +24,6 @@ public class NovelDto {
   private Float novelGrade;
 
   private List<CategoryDto> categoryDtoList;
+
+  private List<EpisodeDto> episodeDtoList;
 }
