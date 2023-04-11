@@ -57,8 +57,8 @@ public class NovelService {
   /**
    * episode 추가 함수
    *
-   * @param episodeDto
-   * @return
+   * @param episodeDto 에피소드 DTO 객체
+   * @return 에피소드가 추가된 NovelDto 객체
    */
   @Transactional
   public NovelDto writeEpisode(EpisodeDto episodeDto) {
@@ -128,17 +128,6 @@ public class NovelService {
   private void isExistsNovelTitle(String novelTitle) {
     if (novelRepository.existsByNovelTitle(novelTitle)) {
       throw new IllegalArgumentException("Novel title already exists.");
-    }
-  }
-
-  /**
-   * 소설이 존재하지 않는지 검증하는 함수
-   *
-   * @param novelTitle 소설의 제목
-   */
-  private void isNotExistNovelTitle(String novelTitle) {
-    if (!novelRepository.existsByNovelTitle(novelTitle)) {
-      throw new IllegalArgumentException("Novel is not exists.");
     }
   }
 
