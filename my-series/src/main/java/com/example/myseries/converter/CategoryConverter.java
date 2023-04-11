@@ -14,6 +14,7 @@ public class CategoryConverter extends Converter<CategoryDto, Category> {
 
   private static CategoryDto convertToDto(Category category) {
     return CategoryDto.builder()
+        .id(category.getId())
         .value(category.getValue())
         .build();
   }
