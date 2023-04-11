@@ -92,12 +92,17 @@ class NovelServiceTest {
     Episode episode = mock(Episode.class);
     Member member = mock(Member.class);
 
+    when(episodeDto.getNovelId()).thenReturn(1L);
+    when(episodeDto.getTitle()).thenReturn("FIRST EPISODE");
+    when(episodeDto.getContent()).thenReturn("TEST CONTENT IS START");
     when(novel.getAuthor()).thenReturn(member);
+    when(member.getName()).thenReturn("TESTER");
+    when(episode.getTitle()).thenReturn("TITLE");
 
-    given(novelRepository.findNovelByNovelTitle(any())).willReturn(Optional.of(novel));
+    given(novelRepository.findNovelById(any())).willReturn(Optional.of(novel));
     given(episodeRepository.save(any())).willReturn(episode);
 
-    NovelDto writeDto = novelService.writeEpisode(novelDto, episodeDto);
+    NovelDto writeDto = novelService.writeEpisode(episodeDto);
 
     System.out.println(writeDto.toString());
 

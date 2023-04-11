@@ -18,9 +18,13 @@ import com.example.myseries.novel.repository.NovelRepository;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class NovelService {
 
@@ -38,6 +42,7 @@ public class NovelService {
    * @param novelDto 추가할 소설의 DTO 정보
    * @return 추가된 소설의 DTO 정보
    */
+  @Transactional
   public NovelDto writeNovel(NovelDto novelDto) {
     isExistsNovelTitle(novelDto.getNovelTitle());
 
@@ -49,31 +54,22 @@ public class NovelService {
     return novelConverter.convertFromEntity(savedNovel);
   }
 
-  public void updateNovel(NovelDto novelDto) {
-  }
-
-  public void deleteNovel(NovelDto novelDto) {
-    /** TODO
-     *
-     * 1. 구매 목록이 있을 경우 삭제 X
-     * 2. 에피소드가 추가 되어 있을 경우, 삭제 X
-     * */
-  }
-
   /**
    * episode 추가 함수
-   * @param novelDto
+   *
    * @param episodeDto
    * @return
    */
-  public NovelDto writeEpisode(NovelDto novelDto, EpisodeDto episodeDto) {
-    Novel novel = novelRepository.findNovelByNovelTitle(novelDto.getNovelTitle()).orElseThrow(
-        () -> new IllegalArgumentException("Cannot find novel by title")
+  @Transactional
+  public NovelDto writeEpisode(EpisodeDto episodeDto) {
+    Novel novel = novelRepository.findNovelById(episodeDto.getNovelId()).orElseThrow(
+        () -> new IllegalArgumentException("Cannot find novel by novel's id")
     );
 
     Episode episode = episodeConverter.convertFromDto(episodeDto);
     novel.addEpisode(episode);
-    episodeRepository.save(episode);
+
+    return novelConverter.convertFromEntity(novel);
   }
 
   public List<CategoryDto> getAllCategory() {
@@ -86,6 +82,7 @@ public class NovelService {
    * @param value 추가할 카테고리 정보
    * @return 추가한 카테고리에 대한 DTO 정보
    */
+  @Transactional
   public CategoryDto saveCategory(String value) {
     Category category = categoryRepository.findCategoryByValue(value.trim()).orElseGet(
         () -> makeNewCategory(value.trim())
@@ -99,6 +96,7 @@ public class NovelService {
    * @param value 카테고리 값
    * @return 카테고리 삭제 성공 여부
    */
+  @Transactional
   public boolean deleteCategory(String value) {
     Category category = categoryRepository.findCategoryByValue(value.trim()).orElseThrow(
         () -> new IllegalArgumentException("Cannot found category.")

@@ -7,15 +7,19 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.ToString.Exclude;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Episode extends BaseTimeEntity {
@@ -25,6 +29,8 @@ public class Episode extends BaseTimeEntity {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "novel_id")
+  @Exclude
   private Novel novel;
 
   private String title;
@@ -42,5 +48,6 @@ public class Episode extends BaseTimeEntity {
 
   public void setNovel(Novel novel) {
     this.novel = novel;
+    novel.addEpisode(this);
   }
 }

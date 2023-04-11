@@ -9,6 +9,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CategoryDto {
+
+  private Long id;
+
   private String value;
 
   public String getValue() {

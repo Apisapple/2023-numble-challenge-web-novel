@@ -2,6 +2,7 @@ package com.example.myseries.novel.model.entity;
 
 import com.example.myseries.common.entity.BaseTimeEntity;
 import com.example.myseries.member.model.entity.Member;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -41,11 +42,11 @@ public class Novel extends BaseTimeEntity {
   @Column(name = "NOVEL_GRADE", nullable = false)
   private Float novelGrade;
 
-  @OneToMany(mappedBy = "novel")
+  @OneToMany(mappedBy = "novel", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<NovelCategory> novelCategories = new ArrayList<>();
 
   @OneToMany(mappedBy = "novel")
-  private List<Episode> episodes;
+  private List<Episode> episodes = new ArrayList<>();
 
   @Builder
   public Novel(String novelTitle) {
@@ -57,16 +58,16 @@ public class Novel extends BaseTimeEntity {
     this.author = author;
   }
 
-  public void addNovelCategory(NovelCategory... categories) {
-    novelCategories.addAll(Arrays.asList(categories));
-  }
-
-  public void removeNovelCategory(NovelCategory novelCategory) {
-    novelCategories.remove(novelCategory);
-  }
-
   public void addEpisode(Episode episode) {
     this.episodes.add(episode);
     episode.setNovel(this);
+  }
+
+  public void addNovelCategory(NovelCategory... categories) {
+    this.novelCategories.addAll(Arrays.asList(categories));
+  }
+
+  public void removeNovelCategory(NovelCategory novelCategory) {
+    this.novelCategories.remove(novelCategory);
   }
 }

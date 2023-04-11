@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface NovelRepository extends JpaRepository<Novel, Long> {
 
   Optional<Novel> findNovelByNovelTitle(String title);
+  Optional<Novel> findNovelById(Long id);
 
   boolean existsByNovelTitle(String title);
 }
