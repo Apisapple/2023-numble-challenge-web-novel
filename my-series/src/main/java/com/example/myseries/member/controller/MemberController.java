@@ -31,6 +31,17 @@ public class MemberController {
     return ResponseEntity.ok(memberService.getMemberById(id));
   }
 
+  @Operation(summary = "Get Member information by name",
+      description = "Get Member information by name")
+  @ApiResponse(responseCode = "200", description = "OK.")
+  @ApiResponse(responseCode = "400", description = "BAD REQUEST.")
+  @ApiResponse(responseCode = "404", description = "NOT FOUND CALENDAR INFORMATION BY ID.")
+  @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")
+  @GetMapping("/name/{name}")
+  public ResponseEntity<MemberDto> getMemberByName(@PathVariable String name) {
+    return ResponseEntity.ok(memberService.getMemberByName(name));
+  }
+
   @Operation(summary = "Login",
       description = "Try login by user name")
   @ApiResponse(responseCode = "200", description = "OK.")
@@ -40,6 +51,17 @@ public class MemberController {
   @PostMapping("/login")
   public ResponseEntity<MemberDto> login(@RequestBody String name) {
     return ResponseEntity.ok(memberService.getMemberByName(name));
+  }
+
+  @Operation(summary = "Signup",
+      description = "Signup")
+  @ApiResponse(responseCode = "200", description = "OK.")
+  @ApiResponse(responseCode = "400", description = "BAD REQUEST.")
+  @ApiResponse(responseCode = "404", description = "NOT FOUND CALENDAR INFORMATION BY ID.")
+  @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")
+  @PostMapping("/signup")
+  public ResponseEntity<MemberDto> signup(@RequestBody MemberDto memberDto) {
+    return ResponseEntity.ok(memberService.saveMember(memberDto.getName()));
   }
 
   @Operation(summary = "Charging point",
