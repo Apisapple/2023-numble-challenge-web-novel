@@ -1,6 +1,7 @@
 package com.example.myseries.novel.controller;
 
 import com.example.myseries.novel.model.dto.CategoryDto;
+import com.example.myseries.novel.model.dto.EpisodeDto;
 import com.example.myseries.novel.model.dto.NovelDto;
 import com.example.myseries.novel.service.NovelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +31,19 @@ public class NovelController {
   @PostMapping("/cover")
   public NovelDto writeNovel(@RequestBody NovelDto novelDto) {
     return novelService.writeNovel(novelDto);
+  }
+
+
+
+  @Operation(summary = "Write novel's episode",
+      description = "소설에 에피소드를 추가")
+  @ApiResponse(responseCode = "200", description = "OK.")
+  @ApiResponse(responseCode = "400", description = "BAD REQUEST.")
+  @ApiResponse(responseCode = "404", description = "EXCEPTION")
+  @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")
+  @PostMapping("/episode")
+  public NovelDto writeEpisode(@RequestBody EpisodeDto episodeDto) {
+    return novelService.writeEpisode(episodeDto);
   }
 
 
