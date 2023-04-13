@@ -10,8 +10,6 @@ import lombok.ToString;
 @ToString
 public class CategoryDto {
 
-  private Long id;
-
   private String value;
 
   public String getValue() {
