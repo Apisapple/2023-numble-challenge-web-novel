@@ -3,6 +3,7 @@ package com.example.myseries.novel.model.entity;
 import com.example.myseries.member.entity.Member;
 import com.example.myseries.novel.common.entity.BaseTimeEntity;
 import com.example.myseries.novel.model.dto.NovelDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,7 +32,7 @@ public class Novel extends BaseTimeEntity {
   @Column(name = "title")
   private String title;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "author", nullable = false)
   private Member author;
 
