@@ -56,7 +56,7 @@ class NovelServiceTest {
     when(novel.toDto()).thenReturn(novelDto);
 
     when(novelDto.getTitle()).thenReturn("test_title");
-    when(novelDto.getAuthor()).thenReturn(memberDto);
+    when(novelDto.getAuthorName()).thenReturn(memberDto.getName());
 
     when(memberDto.getName()).thenReturn("test_user");
   }
