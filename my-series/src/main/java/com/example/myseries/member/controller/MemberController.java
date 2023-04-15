@@ -42,6 +42,17 @@ public class MemberController {
     return ResponseEntity.ok(memberService.getMemberByName(name));
   }
 
+  @Operation(summary = "회원가입",
+      description = "회원 가입 API")
+  @ApiResponse(responseCode = "200", description = "OK.")
+  @ApiResponse(responseCode = "400", description = "BAD REQUEST.")
+  @ApiResponse(responseCode = "404", description = "NOT FOUND CALENDAR INFORMATION BY ID.")
+  @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")
+  @PostMapping("/signup")
+  public ResponseEntity<MemberDto> signUp(@RequestBody String name) {
+    return ResponseEntity.ok(memberService.saveMember(name));
+  }
+
   @Operation(summary = "Charging point",
       description = "Charging point")
   @ApiResponse(responseCode = "200", description = "OK.")
