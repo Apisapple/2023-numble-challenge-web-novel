@@ -64,5 +64,20 @@ class NovelRepositoryTest {
 
   @Test
   void existsNovelByTitle() {
+    Member author = Member.builder()
+        .name("test_user")
+        .build();
+
+    Novel novel = Novel.builder()
+        .author(author)
+        .title("test_title")
+        .build();
+
+    author.writeNovel(novel);
+    novelRepository.save(novel);
+
+    boolean isExist = novelRepository.existsNovelByTitle("test_title");
+
+    Assertions.assertTrue(isExist);
   }
 }
