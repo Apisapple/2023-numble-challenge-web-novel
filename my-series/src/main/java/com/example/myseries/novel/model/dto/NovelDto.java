@@ -1,6 +1,5 @@
 package com.example.myseries.novel.model.dto;
 
-import com.example.myseries.member.dto.MemberDto;
 import com.example.myseries.member.entity.Member;
 import com.example.myseries.novel.model.entity.Novel;
 import java.io.Serializable;
@@ -13,10 +12,10 @@ import lombok.Data;
 public class NovelDto implements Serializable {
 
   private final String title;
-  private final MemberDto author;
+  private final String authorName;
   private final Float grade;
-  private final LocalDateTime createdDate;
-  private final LocalDateTime modifiedDate;
+  private final String createdDate;
+  private final String modifiedDate;
 
   public Novel toEntity(Member author) {
     return Novel.builder()
