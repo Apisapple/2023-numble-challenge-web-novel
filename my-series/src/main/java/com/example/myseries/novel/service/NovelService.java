@@ -6,6 +6,7 @@ import com.example.myseries.member.repository.MemberRepository;
 import com.example.myseries.novel.model.dto.NovelDto;
 import com.example.myseries.novel.model.dto.NovelListRequestData;
 import com.example.myseries.novel.model.dto.UpdateNovelRequestData;
+import com.example.myseries.novel.model.dto.WriteNovelRequestData;
 import com.example.myseries.novel.model.entity.Novel;
 import com.example.myseries.novel.repository.NovelRepository;
 import java.util.List;
@@ -25,20 +26,23 @@ public class NovelService {
   /**
    * 소설 정보 추가 (저장이 되어 있는 목록이 있을 경우, 기존 정보 반환)
    *
-   * @param novelDto 소설 정보
+   * @param requestData 소설 정보
    * @return 저장된 소설 정보
    */
   @Transactional
-  public NovelDto writeNovel(NovelDto novelDto) {
+  public NovelDto writeNovel(WriteNovelRequestData requestData) {
 
-    Member author = getAuthor(novelDto.getAuthor().getName());
+    Member author = getAuthor(requestData.getAuthor());
 
-    if (novelRepository.existsNovelByTitle(novelDto.getTitle())) {
+    if (novelRepository.existsNovelByTitle(requestData.getTitle())) {
       throw new IllegalStateException("이미 존재하는 소설 제목 입니다.");
     }
 
-    Novel novel = novelRepository.findNovelByTitleAndAuthor(novelDto.getTitle(), author)
-        .orElseGet(() -> saveNewNovel(novelDto, author));
+    Novel novel = novelRepository.findNovelByTitleAndAuthor(requestData.getTitle(), author)
+        .orElseGet(() -> saveNewNovel(NovelDto.builder()
+            .title(requestData.getTitle())
+            .authorName(requestData.getAuthor())
+            .build(), author));
 
     return novel.toDto();
   }
@@ -46,11 +50,11 @@ public class NovelService {
   /**
    * 소설 하나의 정보 가져오기
    *
-   * @param requestData 소설 정보
+   * @param title 찾을 소설 제목
    * @return 조회한 소설 정보
    */
-  public NovelDto getNovel(NovelListRequestData requestData) {
-    Novel novel = novelRepository.findNovelByTitle(requestData.getTitle())
+  public NovelDto getNovel(String title) {
+    Novel novel = novelRepository.findNovelByTitle(title)
         .orElseThrow(() -> new IllegalArgumentException("소설의 정보를 찾을 수 없습니다."));
     return novel.toDto();
   }
@@ -58,11 +62,11 @@ public class NovelService {
   /**
    * 한 작가의 소설 목록 조회
    *
-   * @param requestData 요청 정보
+   * @param name 작가의 이름
    * @return 소설 리스트
    */
-  public List<NovelDto> getNovels(NovelListRequestData requestData) {
-    Member author = getAuthor(requestData.getAuthor());
+  public List<NovelDto> getNovels(String name) {
+    Member author = getAuthor(name);
     List<Novel> novels = author.getNovels();
     return novels.stream().map(Novel::toDto).toList();
   }
@@ -94,7 +98,7 @@ public class NovelService {
    */
   @Transactional
   public Boolean deleteNovel(NovelDto novelDto) {
-    Member author = getAuthor(novelDto.getAuthor().getName());
+    Member author = getAuthor(novelDto.getAuthorName());
     Novel novel = novelRepository.findNovelByTitleAndAuthor(novelDto.getTitle(), author)
         .orElseThrow(() -> new IllegalArgumentException("소설 정보를 찾을 수 없습니다."));
 
