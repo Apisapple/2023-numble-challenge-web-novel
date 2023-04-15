@@ -57,6 +57,10 @@ public class Novel extends BaseTimeEntity {
         .build();
   }
 
+  public void updateTitle(String title) {
+    this.title = title;
+  }
+
   @Override
   public String toString() {
     return "Novel{" +

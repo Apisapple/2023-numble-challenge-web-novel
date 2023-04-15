@@ -3,6 +3,7 @@ package com.example.myseries.novel.service;
 import com.example.myseries.member.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import com.example.myseries.novel.model.dto.NovelDto;
+import com.example.myseries.novel.model.dto.UpdateNovelRequestData;
 import com.example.myseries.novel.model.entity.Novel;
 import com.example.myseries.novel.repository.NovelRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,7 @@ public class NovelService {
   @Transactional
   public NovelDto writeNovel(NovelDto novelDto) {
 
-    Member author = memberRepository.findByName(novelDto.getAuthor().getName())
-        .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 사용자 입니다."));
+    Member author = getAuthor(novelDto.getAuthor().getName());
 
     if (novelRepository.existsNovelByTitle(novelDto.getTitle())) {
       throw new IllegalStateException("이미 존재하는 소설 제목 입니다.");
@@ -36,6 +36,18 @@ public class NovelService {
 
     Novel novel = novelRepository.findNovelByTitleAndAuthor(novelDto.getTitle(), author)
         .orElseGet(() -> saveNewNovel(novelDto, author));
+
+    return novel.toDto();
+  }
+
+  @Transactional
+  public NovelDto updateNovelInformation(UpdateNovelRequestData requestData) {
+    Member author = getAuthor(requestData.getAuthor());
+
+    Novel novel = novelRepository.findNovelByTitleAndAuthor(requestData.getAsIsTitle(), author)
+        .orElseThrow(() -> new IllegalArgumentException("소설 정보를 찾을 수 없습니다."));
+
+    novel.updateTitle(requestData.getToBeTitle());
 
     return novel.toDto();
   }
@@ -52,5 +64,15 @@ public class NovelService {
     return novelRepository.save(novel);
   }
 
+  /**
+   * 작가 정보 조회 함수
+   *
+   * @param name 계정 이름
+   * @return 계정 정보
+   */
+  private Member getAuthor(String name) {
+    return memberRepository.findByName(name)
+        .orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 멤버 입니다."));
+  }
 }
 
