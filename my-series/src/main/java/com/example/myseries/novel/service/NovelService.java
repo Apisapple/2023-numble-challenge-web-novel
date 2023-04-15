@@ -1,11 +1,14 @@
 package com.example.myseries.novel.service;
 
+import com.example.myseries.member.dto.MemberDto;
 import com.example.myseries.member.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import com.example.myseries.novel.model.dto.NovelDto;
+import com.example.myseries.novel.model.dto.NovelListRequestData;
 import com.example.myseries.novel.model.dto.UpdateNovelRequestData;
 import com.example.myseries.novel.model.entity.Novel;
 import com.example.myseries.novel.repository.NovelRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +43,37 @@ public class NovelService {
     return novel.toDto();
   }
 
+  /**
+   * 소설 하나의 정보 가져오기
+   *
+   * @param requestData 소설 정보
+   * @return 조회한 소설 정보
+   */
+  public NovelDto getNovel(NovelListRequestData requestData) {
+    Novel novel = novelRepository.findNovelByTitle(requestData.getTitle())
+        .orElseThrow(() -> new IllegalArgumentException("소설의 정보를 찾을 수 없습니다."));
+    return novel.toDto();
+  }
+
+  /**
+   * 한 작가의 소설 목록 조회
+   *
+   * @param requestData 요청 정보
+   * @return 소설 리스트
+   */
+  public List<NovelDto> getNovels(NovelListRequestData requestData) {
+    Member author = getAuthor(requestData.getAuthor());
+    List<Novel> novels = author.getNovels();
+    return novels.stream().map(Novel::toDto).toList();
+  }
+
+
+  /**
+   * 소설 정보 수정 함수
+   *
+   * @param requestData 소설 정보 변경 요청 데이터
+   * @return 변경된 소설 정보
+   */
   @Transactional
   public NovelDto updateNovelInformation(UpdateNovelRequestData requestData) {
     Member author = getAuthor(requestData.getAuthor());
@@ -50,6 +84,23 @@ public class NovelService {
     novel.updateTitle(requestData.getToBeTitle());
 
     return novel.toDto();
+  }
+
+  /**
+   * 소설 정보 삭제 함수
+   *
+   * @param novelDto 삭제할 소설의 DTO
+   * @return 삭제 성공 여부
+   */
+  @Transactional
+  public Boolean deleteNovel(NovelDto novelDto) {
+    Member author = getAuthor(novelDto.getAuthor().getName());
+    Novel novel = novelRepository.findNovelByTitleAndAuthor(novelDto.getTitle(), author)
+        .orElseThrow(() -> new IllegalArgumentException("소설 정보를 찾을 수 없습니다."));
+
+    novelRepository.delete(novel);
+
+    return true;
   }
 
   /**
