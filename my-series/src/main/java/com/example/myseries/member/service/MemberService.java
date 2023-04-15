@@ -21,11 +21,11 @@ public class MemberService {
    * @return saved member
    */
   @Transactional
-  public Member saveMember(String name) {
+  public MemberDto saveMember(String name) {
     Member member = Member.builder()
         .name(name)
         .build();
-    return memberRepository.save(member);
+    return memberRepository.save(member).toDto();
   }
 
 

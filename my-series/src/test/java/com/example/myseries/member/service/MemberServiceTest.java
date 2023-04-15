@@ -3,6 +3,7 @@ package com.example.myseries.member.service;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import com.example.myseries.member.dto.MemberDto;
 import com.example.myseries.member.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import java.util.Optional;
@@ -35,8 +36,9 @@ class MemberServiceTest {
     given(memberRepository.save(any())).willReturn(member);
     given(memberRepository.findByName("TESTER")).willReturn(Optional.ofNullable(member));
 
-    Member updatedMember = memberService.saveMember(member);
-    Member updateMember2 = memberService.buyPoint(updatedMember.getName(), 200);
+    assert member != null;
+    Member updatedMember = memberService.saveMember(member.getName());
+    MemberDto updateMember2 = memberService.buyPoint(updatedMember.getName(), 200);
 
     Assertions.assertEquals(200, updateMember2.getPoint());
   }
@@ -51,7 +53,7 @@ class MemberServiceTest {
 
     given(memberRepository.findByName("TESTER")).willReturn(Optional.of(member));
 
-    Member updateMember = memberService.usePoint(member.getName(), 200);
+    MemberDto updateMember = memberService.usePoint(member.getName(), 200);
 
     Assertions.assertEquals(800, updateMember.getPoint());
   }
