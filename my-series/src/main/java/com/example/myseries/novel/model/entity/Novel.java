@@ -12,8 +12,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +43,10 @@ public class Novel extends BaseTimeEntity {
   @Column(name = "grade")
   private Float grade;
 
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<Episode> episodes;
+
   @Builder
   public Novel(String title, Member author) {
     this.title = title;
@@ -62,6 +68,16 @@ public class Novel extends BaseTimeEntity {
 
   public void updateTitle(String title) {
     this.title = title;
+  }
+
+  public void addEpisode(Episode episode) {
+    this.episodes.add(episode);
+  }
+
+  public void removeEpisode(Episode episode) {
+    if (this.episodes.size() != 0) {
+      this.episodes.remove(episode);
+    }
   }
 
   @Override
