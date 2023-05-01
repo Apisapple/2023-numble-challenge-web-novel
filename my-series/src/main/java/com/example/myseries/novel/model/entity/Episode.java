@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.Arrays;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -55,4 +56,13 @@ public class Episode extends BaseTimeEntity {
     this.gradeCnt = 0L;
     this.viewerCnt = 0L;
   }
+
+  /**
+   * 에피소드 목록 추가
+   * @param episodePages 에피소드 페이지 정보들
+   */
+  public void addEpisodePage(EpisodePage... episodePages) {
+    pages.addAll(Arrays.asList(episodePages));
+  }
+
 }
