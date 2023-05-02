@@ -1,7 +1,10 @@
 package com.example.myseries.novel.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import com.example.myseries.novel.model.record.EpisodeRequestData;
 import com.example.myseries.novel.repository.EpisodeRepository;
 import com.example.myseries.novel.repository.NovelRepository;
 import org.junit.jupiter.api.Test;
@@ -22,8 +25,11 @@ class EpisodeServiceTest {
   @Mock
   private EpisodeRepository episodeRepository;
 
+  EpisodeRequestData episodeRequestData = mock(EpisodeRequestData.class);
+
   @Test
   void writeEpisode() {
+    when(episodeRequestData.content()).thenReturn("CONTENT");
   }
 
   @Test
@@ -31,7 +37,7 @@ class EpisodeServiceTest {
   }
 
   @Test
-  void remoeEpisode() {
+  void removeEpisode() {
   }
 
   @Test
