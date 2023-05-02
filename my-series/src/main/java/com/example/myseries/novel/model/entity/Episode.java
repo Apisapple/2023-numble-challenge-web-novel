@@ -49,9 +49,9 @@ public class Episode extends BaseTimeEntity {
   }
 
   @Builder
-  public Episode(String title, Integer price, Long viewerCnt) {
+  public Episode(String title) {
     this.title = title;
-    this.price = price;
+    this.price = 0;
     this.totalGrade = 0L;
     this.gradeCnt = 0L;
     this.viewerCnt = 0L;

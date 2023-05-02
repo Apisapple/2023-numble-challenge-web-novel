@@ -23,9 +23,7 @@ public class EpisodeDto {
 
   public Episode toEntity() {
     return Episode.builder()
-        .content(this.content)
         .title(this.title)
-        .point(this.point)
         .viewerCnt(this.viewerCnt)
         .build();
   }
