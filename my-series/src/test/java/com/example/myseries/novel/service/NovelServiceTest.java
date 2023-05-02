@@ -12,6 +12,7 @@ import com.example.myseries.member.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
 import com.example.myseries.novel.model.dto.NovelDto;
 import com.example.myseries.novel.model.dto.UpdateNovelRequestData;
+import com.example.myseries.novel.model.dto.WriteNovelRequestData;
 import com.example.myseries.novel.model.entity.Novel;
 import com.example.myseries.novel.repository.NovelRepository;
 import java.util.Optional;
@@ -43,6 +44,8 @@ class NovelServiceTest {
   NovelDto novelDto = mock(NovelDto.class);
   MemberDto memberDto = mock(MemberDto.class);
 
+  WriteNovelRequestData writeNovelRequestData = mock(WriteNovelRequestData.class);
+
   @BeforeEach
   void initTest() {
     when(author.getId()).thenReturn(1L);
@@ -70,7 +73,7 @@ class NovelServiceTest {
         Optional.ofNullable(novel)
     );
 
-    NovelDto testResult = novelService.writeNovel(novelDto);
+    NovelDto testResult = novelService.writeNovel(writeNovelRequestData);
 
     Assertions.assertNotNull(testResult);
   }
