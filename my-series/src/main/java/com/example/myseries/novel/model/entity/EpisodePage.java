@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -31,4 +32,10 @@ public class EpisodePage extends BaseTimeEntity {
   @Column(name = "content", length = 5000)
   private String content;
 
+  @Builder
+  public EpisodePage(Episode episode, Integer pageNumber, String content) {
+    this.episode = episode;
+    this.pageNumber = pageNumber;
+    this.content = content;
+  }
 }
