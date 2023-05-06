@@ -2,10 +2,12 @@ package com.example.myseries.novel.model.record;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
+@Builder
 public record EpisodeRequestData(
     @JsonProperty("novel_id") Long novelId,
-    @JsonProperty("novel_title") Long novelTitle,
+    @JsonProperty("novel_title") String novelTitle,
     @JsonProperty("episode_title") String episodeTitle,
     @JsonProperty("content") String content
 
