@@ -3,7 +3,6 @@ package com.example.myseries.novel.model.dto;
 import com.example.myseries.member.entity.Member;
 import com.example.myseries.novel.model.entity.Novel;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
 
