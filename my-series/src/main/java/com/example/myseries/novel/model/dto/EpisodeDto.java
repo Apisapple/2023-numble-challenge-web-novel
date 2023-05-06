@@ -3,6 +3,7 @@ package com.example.myseries.novel.model.dto;
 import com.example.myseries.novel.model.entity.Episode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class EpisodeDto {
 
   private final String title;
 
-  private final String content;
+  private final List<EpisodePageDto> contents;
 
   private final Long point;
 
@@ -24,7 +25,6 @@ public class EpisodeDto {
   public Episode toEntity() {
     return Episode.builder()
         .title(this.title)
-        .viewerCnt(this.viewerCnt)
         .build();
   }
 
