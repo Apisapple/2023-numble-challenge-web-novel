@@ -37,7 +37,7 @@ class MemberServiceTest {
     given(memberRepository.findByName("TESTER")).willReturn(Optional.ofNullable(member));
 
     assert member != null;
-    Member updatedMember = memberService.saveMember(member.getName());
+    MemberDto updatedMember = memberService.saveMember(member.getName());
     MemberDto updateMember2 = memberService.buyPoint(updatedMember.getName(), 200);
 
     Assertions.assertEquals(200, updateMember2.getPoint());
