@@ -1,6 +1,8 @@
 package com.example.myseries.novel.model.entity;
 
 import com.example.myseries.novel.common.entity.BaseTimeEntity;
+import com.example.myseries.novel.model.dto.EpisodeDto;
+import com.example.myseries.novel.model.dto.EpisodePageDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AccessLevel;
@@ -63,6 +67,22 @@ public class Episode extends BaseTimeEntity {
    */
   public void addEpisodePage(EpisodePage... episodePages) {
     pages.addAll(Arrays.asList(episodePages));
+  }
+
+  public EpisodeDto toDto() {
+
+    List<EpisodePageDto> pageDtos = new ArrayList<>();
+    for (EpisodePage episodePage : pages) {
+      pageDtos.add(episodePage.toDto());
+    }
+
+    return EpisodeDto.builder()
+        .title(this.title)
+        .viewerCnt(this.viewerCnt)
+        .point(this.totalGrade)
+        .novelTitle(this.novel.getTitle())
+        .contents(pageDtos)
+        .build();
   }
 
 }
