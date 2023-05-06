@@ -1,6 +1,7 @@
 package com.example.myseries.novel.model.entity;
 
 import com.example.myseries.novel.common.entity.BaseTimeEntity;
+import com.example.myseries.novel.model.dto.EpisodePageDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,5 +38,12 @@ public class EpisodePage extends BaseTimeEntity {
     this.episode = episode;
     this.pageNumber = pageNumber;
     this.content = content;
+  }
+
+  public EpisodePageDto toDto() {
+    return EpisodePageDto.builder()
+        .content(this.content)
+        .pageNumber(this.pageNumber)
+        .build();
   }
 }
