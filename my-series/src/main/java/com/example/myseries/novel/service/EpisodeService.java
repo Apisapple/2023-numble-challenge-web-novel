@@ -23,7 +23,7 @@ public class EpisodeService {
   private final NovelRepository novelRepository;
   private final int contentLength = 500;
 
-  public EpisodeDto writeEpisode(EpisodeRequestData requestData) throws Exception {
+  public EpisodeDto writeEpisode(EpisodeRequestData requestData) {
     Novel novel = novelRepository.findNovelById(requestData.novelId())
         .orElseThrow(() -> new IllegalArgumentException(""));
 
@@ -31,23 +31,13 @@ public class EpisodeService {
         .title(requestData.episodeTitle())
         .build();
 
-    String[] splitContents = requestData.content().split("(?<=\\G.{" + contentLength + "})");
-    int indexPage = 0;
-    for (String splitContent : splitContents) {
-      EpisodePage episodePage = EpisodePage.builder()
-          .content(splitContent)
-          .episode(episode)
-          .pageNumber(indexPage + 1)
-          .build();
-
-      episode.addEpisodePage(episodePage);
-      indexPage++;
-    }
+    setEpisodeContentOnEpisode(requestData, episode);
     novel.addEpisode(episode);
     return episodeRepository.save(episode).toDto();
   }
 
-  public void modifyEpisode() {
+
+  public void modifyEpisode(EpisodeRequestData episodeRequestData) {
 
   }
 
@@ -61,5 +51,20 @@ public class EpisodeService {
 
   public void getEpisodeContent() {
 
+  }
+
+  private void setEpisodeContentOnEpisode(EpisodeRequestData requestData, Episode episode) {
+    String[] splitContents = requestData.content().split("(?<=\\G.{" + contentLength + "})");
+    int indexPage = 0;
+    for (String splitContent : splitContents) {
+      EpisodePage episodePage = EpisodePage.builder()
+          .content(splitContent)
+          .episode(episode)
+          .pageNumber(indexPage + 1)
+          .build();
+
+      episode.addEpisodePage(episodePage);
+      indexPage++;
+    }
   }
 }
