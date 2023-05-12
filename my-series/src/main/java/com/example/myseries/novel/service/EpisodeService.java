@@ -1,6 +1,7 @@
 package com.example.myseries.novel.service;
 
 
+import com.example.myseries.novel.common.error.NovelError;
 import com.example.myseries.novel.model.dto.EpisodeDto;
 import com.example.myseries.novel.model.entity.Episode;
 import com.example.myseries.novel.model.entity.EpisodePage;
@@ -21,11 +22,10 @@ public class EpisodeService {
 
   private final EpisodeRepository episodeRepository;
   private final NovelRepository novelRepository;
-  private final int contentLength = 500;
 
   public EpisodeDto writeEpisode(EpisodeRequestData requestData) {
     Novel novel = novelRepository.findNovelById(requestData.novelId())
-        .orElseThrow(() -> new IllegalArgumentException(""));
+        .orElseThrow(() -> new IllegalArgumentException(NovelError.CANNOT_FOUND_NOVEL_BY_ID.getValue()));
 
     Episode episode = Episode.builder()
         .title(requestData.episodeTitle())
@@ -38,7 +38,6 @@ public class EpisodeService {
 
 
   public void modifyEpisode(EpisodeRequestData episodeRequestData) {
-
   }
 
   public void remoeEpisode() {
@@ -54,6 +53,7 @@ public class EpisodeService {
   }
 
   private void setEpisodeContentOnEpisode(EpisodeRequestData requestData, Episode episode) {
+    int contentLength = 500;
     String[] splitContents = requestData.content().split("(?<=\\G.{" + contentLength + "})");
     int indexPage = 0;
     for (String splitContent : splitContents) {
