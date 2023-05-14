@@ -23,7 +23,9 @@ public class MemberService {
   public MemberDto saveMember(MemberDto memberDto) {
     Member member = memberDto.toEntity();
 
-    checkAlreadyMember(member);
+    if (checkAlreadyMember(member)) {
+      throw new IllegalArgumentException();
+    }
 
     return memberRepository.save(member).toDto();
   }
@@ -95,7 +97,14 @@ public class MemberService {
     return savedMember.toDto();
   }
 
-  private void checkAlreadyMember(Member member) {
+  /**
+   * 멤버가 저장이 되어 있는지 확인
+   *
+   * @param member 멤버 정보
+   * @return 존재한다면 true 반환
+   */
+  private boolean checkAlreadyMember(Member member) {
+    return memberRepository.existsByEmail(member.getEmail());
   }
 
 }
