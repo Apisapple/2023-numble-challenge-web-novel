@@ -14,18 +14,18 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
 
-  /**
-   * Saved member
-   *
-   * @param name member's name
-   * @return saved member
+  /***
+   * Save member function
+   * @param memberDto member 정보
+   * @return 저장된 멤버의 정보
    */
   @Transactional
-  public Member saveMember(String name) {
-    Member member = Member.builder()
-        .name(name)
-        .build();
-    return memberRepository.save(member);
+  public MemberDto saveMember(MemberDto memberDto) {
+    Member member = memberDto.toEntity();
+
+    checkAlreadyMember(member);
+
+    return memberRepository.save(member).toDto();
   }
 
 
@@ -94,4 +94,8 @@ public class MemberService {
 
     return savedMember.toDto();
   }
+
+  private void checkAlreadyMember(Member member) {
+  }
+
 }
