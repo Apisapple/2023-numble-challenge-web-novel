@@ -2,6 +2,7 @@ package com.example.myseries.member.service;
 
 import com.example.myseries.member.dto.MemberDto;
 import com.example.myseries.member.entity.Member;
+import com.example.myseries.member.error.MemberError;
 import com.example.myseries.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,11 @@ public class MemberService {
     Member member = memberDto.toEntity();
 
     if (checkAlreadyMember(member)) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(MemberError.ALREADY_EXIST_MEMBER.getMessage());
     }
 
     return memberRepository.save(member).toDto();
   }
-
 
   /**
    * Get Member information by id
@@ -40,7 +40,7 @@ public class MemberService {
    */
   public MemberDto getMemberById(Long id) throws IllegalArgumentException {
     Member savedMember = memberRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("Cannot found member by id")
+        () -> new IllegalArgumentException(MemberError.CANNOT_FIND_MEMBER_BY_ID.getMessage())
     );
 
     return savedMember.toDto();
