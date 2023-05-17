@@ -55,7 +55,7 @@ public class MemberService {
    */
   public MemberDto getMemberByName(String name) throws IllegalArgumentException {
     Member savedMember = memberRepository.findByName(name).orElseThrow(
-        () -> new IllegalArgumentException("Cannot found member by name")
+        () -> new IllegalArgumentException(MemberError.CANNOT_FIND_MEMBER_BY_NAME.getMessage())
     );
 
     return savedMember.toDto();
@@ -71,7 +71,7 @@ public class MemberService {
   @Transactional
   public MemberDto buyPoint(String name, Integer point) {
     Member savedMember = memberRepository.findByName(name).orElseThrow(
-        () -> new IllegalArgumentException("Cannot found member by name")
+        () -> new IllegalArgumentException(MemberError.CANNOT_FIND_MEMBER_BY_NAME.getMessage())
     );
 
     savedMember.addPoint(point);

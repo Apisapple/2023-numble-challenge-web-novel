@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 @JsonFormat(shape = Shape.OBJECT)
 public enum MemberError {
   CANNOT_FIND_MEMBER_BY_ID(404, Constant.BASE_CODE + 1, "Cannot find member by id."),
-  ALREADY_EXIST_MEMBER(400, Constant.BASE_CODE + 2, "Already exist member.");
+  CANNOT_FIND_MEMBER_BY_NAME(404, Constant.BASE_CODE + 2, "Cannot find member by name."),
+  ALREADY_EXIST_MEMBER(400, Constant.BASE_CODE + 3, "Already exist member.");
 
 
   private final int status;
