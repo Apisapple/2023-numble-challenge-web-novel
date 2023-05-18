@@ -18,7 +18,8 @@ permissions:
 
 jobs:
   build:
-
+    env:
+      working-directory: ./my-series
     runs-on: ubuntu-latest
 
     steps:
