@@ -27,7 +27,7 @@ public class AuthenticationController {
   @PostMapping("auth")
   public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
     UsernamePasswordAuthenticationToken authenticationToken =
-        new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+        new UsernamePasswordAuthenticationToken(loginDto.userId(), loginDto.password());
 
     Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     String jwt = tokenProvider.createToken(authentication);
