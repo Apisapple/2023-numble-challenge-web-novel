@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class JwtFilters extends GenericFilter {
 
-  private static final String AUTHORIZATION_HEADER = "Authorization";
+  public static final String AUTHORIZATION_HEADER = "Authorization";
   private final TokenProvider tokenProvider;
 
   // 실제 필터링 로직은 doFilter 안에 들어가게 된다. GenericFilterBean을 받아 구현

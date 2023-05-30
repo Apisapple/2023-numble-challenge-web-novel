@@ -1,5 +1,6 @@
 package com.example.myseries.member.controller;
 
+import com.example.myseries.member.config.JwtFilters;
 import com.example.myseries.member.config.TokenProvider;
 import com.example.myseries.member.dto.LoginDto;
 import com.example.myseries.member.dto.TokenDto;
@@ -32,6 +33,8 @@ public class AuthenticationController {
     Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     String jwt = tokenProvider.createToken(authentication);
     HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.add(JwtFilters.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
     return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
   }
 }
