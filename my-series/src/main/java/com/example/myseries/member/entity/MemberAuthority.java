@@ -7,15 +7,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class MemberAuthority {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @ManyToOne(fetch = FetchType.EAGER)
+
+  @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
-  @ManyToOne(fetch = FetchType.EAGER)
+
+  @ManyToOne(fetch = FetchType.LAZY)
   private Authority authority;
 }
