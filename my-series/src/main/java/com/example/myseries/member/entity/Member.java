@@ -47,7 +47,7 @@ public class Member {
   }
 
   public void subPoint(Integer point) {
-    if(this.point - point >= 0) {
+    if (this.point - point >= 0) {
       this.point = this.point - point;
     }
   }
