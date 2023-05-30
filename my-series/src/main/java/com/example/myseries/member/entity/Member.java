@@ -1,11 +1,14 @@
 package com.example.myseries.member.entity;
 
 import com.example.myseries.member.dto.MemberDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +30,9 @@ public class Member {
   private String name;
 
   private Integer point;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  private Set<MemberAuthority> memberAuthorities;
 
   @Builder
   public Member(String email, String password, String name) {
