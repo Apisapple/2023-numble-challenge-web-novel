@@ -7,10 +7,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class MemberAuthority {
 
   @Id
@@ -22,4 +25,13 @@ public class MemberAuthority {
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Authority authority;
+
+  public MemberAuthority(Member member, Authority authority) {
+    this.member = member;
+    this.authority = authority;
+  }
+
+  public static MemberAuthority giveAuthorityToMember(Authority authority, Member member) {
+    return new MemberAuthority(member, authority);
+  }
 }

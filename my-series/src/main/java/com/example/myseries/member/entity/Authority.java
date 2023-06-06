@@ -39,4 +39,13 @@ public class Authority {
     private String role;
   }
 
+  public void addMember(MemberAuthority memberAuthority) {
+    this.members.add(memberAuthority);
+  }
+
+  public static Authority createNormalAuthority() {
+    return Authority.builder()
+        .authority(AuthorityData.NORMAL)
+        .build();
+  }
 }

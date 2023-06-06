@@ -61,4 +61,8 @@ public class Member {
         .point(this.point)
         .build();
   }
+
+  public void giveAuthority(MemberAuthority memberAuthority) {
+    this.memberAuthorities.add(memberAuthority);
+  }
 }

@@ -1,7 +1,10 @@
 package com.example.myseries.member.service;
 
 import com.example.myseries.member.dto.MemberDto;
+import com.example.myseries.member.entity.Authority;
+import com.example.myseries.member.entity.Authority.AuthorityData;
 import com.example.myseries.member.entity.Member;
+import com.example.myseries.member.entity.MemberAuthority;
 import com.example.myseries.member.error.MemberError;
 import com.example.myseries.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +24,17 @@ public class MemberService {
    * @return 저장된 멤버의 정보
    */
   @Transactional
-  public MemberDto saveMember(MemberDto memberDto) {
+  public MemberDto signup(MemberDto memberDto) {
     Member member = memberDto.toEntity();
 
     if (checkAlreadyMember(member)) {
       throw new IllegalArgumentException(MemberError.ALREADY_EXIST_MEMBER.getMessage());
     }
+
+    var authority = Authority.createNormalAuthority();
+    var memberAuthority = MemberAuthority.giveAuthorityToMember(authority, member);
+    member.giveAuthority(memberAuthority);
+    authority.addMember(memberAuthority);
 
     return memberRepository.save(member).toDto();
   }
