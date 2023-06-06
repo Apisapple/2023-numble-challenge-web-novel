@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class Authority {
   private AuthorityData authority;
 
   @OneToMany(mappedBy = "authority", cascade = CascadeType.ALL)
-  private Set<MemberAuthority> members;
+  private Set<MemberAuthority> members = new HashSet<>();
 
   @Builder
   public Authority(AuthorityData authority) {

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class Member {
   private Integer point;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private Set<MemberAuthority> memberAuthorities;
+  private Set<MemberAuthority> memberAuthorities = new HashSet<>();
 
   @Builder
   public Member(String email, String password, String name) {
