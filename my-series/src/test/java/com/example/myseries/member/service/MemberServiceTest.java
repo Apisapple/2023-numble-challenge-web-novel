@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import com.example.myseries.member.dto.MemberDto;
 import com.example.myseries.member.entity.Member;
 import com.example.myseries.member.repository.MemberRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,9 +35,14 @@ class MemberServiceTest {
         .id(1L)
         .build();
 
-    Member member = mock(Member.class);
-    given(memberRepository.save(any())).willReturn(member);
+    Member member = Member.builder()
+        .name("test_user")
+        .password("1234qwer")
+        .build();
 
-    memberService.signup(memberDto);
+    given(memberRepository.save(any())).willReturn(member);
+    MemberDto savedMemberDto = memberService.signup(memberDto);
+
+    Assertions.assertEquals(memberDto.getName(), savedMemberDto.getName());
   }
 }
