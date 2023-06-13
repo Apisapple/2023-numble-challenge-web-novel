@@ -1,7 +1,11 @@
 package com.example.myseries.member.service;
 
 import com.example.myseries.member.dto.MemberDto;
+import com.example.myseries.member.entity.Authority;
+import com.example.myseries.member.entity.Authority.AuthorityData;
 import com.example.myseries.member.entity.Member;
+import com.example.myseries.member.entity.MemberAuthority;
+import com.example.myseries.member.error.MemberError;
 import com.example.myseries.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,20 +18,27 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
 
-  /**
-   * Saved member
-   *
-   * @param name member's name
-   * @return saved member
+  /***
+   * Save member function
+   * @param memberDto member 정보
+   * @return 저장된 멤버의 정보
    */
   @Transactional
-  public MemberDto saveMember(String name) {
-    Member member = Member.builder()
-        .name(name)
-        .build();
+
+  public MemberDto signup(MemberDto memberDto) {
+    Member member = memberDto.toEntity();
+
+    if (checkAlreadyMember(member)) {
+      throw new IllegalArgumentException(MemberError.ALREADY_EXIST_MEMBER.getMessage());
+    }
+
+    var authority = Authority.createNormalAuthority();
+    var memberAuthority = MemberAuthority.giveAuthorityToMember(authority, member);
+    member.giveAuthority(memberAuthority);
+    authority.addMember(memberAuthority);
+
     return memberRepository.save(member).toDto();
   }
-
 
   /**
    * Get Member information by id
@@ -38,7 +49,7 @@ public class MemberService {
    */
   public MemberDto getMemberById(Long id) throws IllegalArgumentException {
     Member savedMember = memberRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("Cannot found member by id")
+        () -> new IllegalArgumentException(MemberError.CANNOT_FIND_MEMBER_BY_ID.getMessage())
     );
 
     return savedMember.toDto();
@@ -53,7 +64,7 @@ public class MemberService {
    */
   public MemberDto getMemberByName(String name) throws IllegalArgumentException {
     Member savedMember = memberRepository.findByName(name).orElseThrow(
-        () -> new IllegalArgumentException("Cannot found member by name")
+        () -> new IllegalArgumentException(MemberError.CANNOT_FIND_MEMBER_BY_NAME.getMessage())
     );
 
     return savedMember.toDto();
@@ -69,7 +80,7 @@ public class MemberService {
   @Transactional
   public MemberDto buyPoint(String name, Integer point) {
     Member savedMember = memberRepository.findByName(name).orElseThrow(
-        () -> new IllegalArgumentException("Cannot found member by name")
+        () -> new IllegalArgumentException(MemberError.CANNOT_FIND_MEMBER_BY_NAME.getMessage())
     );
 
     savedMember.addPoint(point);
@@ -94,4 +105,15 @@ public class MemberService {
 
     return savedMember.toDto();
   }
+
+  /**
+   * 멤버가 저장이 되어 있는지 확인
+   *
+   * @param member 멤버 정보
+   * @return 존재한다면 true 반환
+   */
+  private boolean checkAlreadyMember(Member member) {
+    return memberRepository.existsByEmail(member.getEmail());
+  }
+
 }
