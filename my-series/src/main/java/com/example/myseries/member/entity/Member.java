@@ -2,6 +2,7 @@ package com.example.myseries.member.entity;
 
 import com.example.myseries.member.dto.MemberDto;
 import jakarta.persistence.CascadeType;
+import com.example.myseries.novel.model.entity.Novel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +30,9 @@ public class Member {
   private String email;
 
   private String password;
+
+  @OneToMany(mappedBy = "id")
+  private List<Novel> novels = new ArrayList<>();
 
   private String name;
 
@@ -53,6 +59,10 @@ public class Member {
     }
   }
 
+  public void writeNovel(Novel novel) {
+    this.novels.add(novel);
+  }
+
   public MemberDto toDto() {
     return MemberDto.builder()
         .id(this.id)
@@ -62,6 +72,7 @@ public class Member {
         .point(this.point)
         .build();
   }
+
 
   public void giveAuthority(MemberAuthority memberAuthority) {
     this.memberAuthorities.add(memberAuthority);

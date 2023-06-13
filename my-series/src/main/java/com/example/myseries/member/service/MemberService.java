@@ -24,6 +24,7 @@ public class MemberService {
    * @return 저장된 멤버의 정보
    */
   @Transactional
+
   public MemberDto signup(MemberDto memberDto) {
     Member member = memberDto.toEntity();
 
